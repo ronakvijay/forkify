@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {key} from '../config';
+import { timingSafeEqual } from 'crypto';
 
 export default class Recipe {
     constructor(id) {
@@ -86,5 +87,17 @@ export default class Recipe {
             return objIng;
         });
         this.ingredients = newIngredients;
+    }
+
+    updateServings (type) {
+        //servings
+        const newServings = type ==='dec' ? this.servings -1 : this.servings + 1;
+        
+        //ingredients
+        this.ingredients.forEach(ing => {
+            ing.count *= (newServings / this.servings);
+        });
+        
+        this.servings = newServings;
     }
 }
